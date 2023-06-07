@@ -1,4 +1,4 @@
-import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import Lottie from "lottie-react";
 import animationData from "../../assets/lottiefile/register.json";
@@ -6,9 +6,11 @@ import { useAuth } from "../../Provider/AuthProvider";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import validator from "../../utility/validator";
+import axiosInstance from "../../utility/axiosInstance";
+import GoogleLogin from "../../Share/GoogleLogin/GoogleLogin";
 
 const Register = () => {
-  const { register, loginWithGoogle, loading, setLoading } = useAuth();
+  const { register, loading, setLoading } = useAuth();
   const [error, setError] = useState("");
   const [toggleEye, setToggleEye] = useState(false);
   const location = useLocation();
@@ -32,6 +34,13 @@ const Register = () => {
       const user = await register(email, password, name, photoUrl);
       // console.log({email,password});
       console.log(user);
+      const dbUserInfo = await axiosInstance.post("/users", {
+        email,
+        role: "student",
+        name,
+        photoUrl,
+      });
+      console.log(dbUserInfo);
       navigate(location?.state?.from?.pathname || "/");
     } catch (error) {
       setError(error.message);
@@ -40,7 +49,7 @@ const Register = () => {
     }
   };
   // Register with google
-  const handleGoogleLogin = async () => {
+  /* const handleGoogleLogin = async () => {
     setError("");
     try {
       const user = await loginWithGoogle();
@@ -51,7 +60,7 @@ const Register = () => {
       setLoading(false);
       setError(error.code);
     }
-  };
+  }; */
   // console.log({ loading, error });
   return (
     <>
@@ -159,7 +168,8 @@ const Register = () => {
             </form>
             <div className="flex flex-col w-2/4 mx-auto border-opacity-50">
               <div className="divider my-2">OR</div>
-              <div className="flex items-center justify-center">
+              <GoogleLogin setError={setError} />
+              {/* <div className="flex items-center justify-center">
                 <button
                   type="button"
                   onClick={handleGoogleLogin}
@@ -172,7 +182,7 @@ const Register = () => {
                 >
                   <FaGoogle />
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import Lottie from "lottie-react";
 import animationData from "../../assets/lottiefile/login.json";
@@ -6,10 +6,11 @@ import { useAuth } from "../../Provider/AuthProvider";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import validator from "../../utility/validator";
+import GoogleLogin from "../../Share/GoogleLogin/GoogleLogin";
 
 
 const Login = () => {
-  const { login, loginWithGoogle, loading, setLoading } = useAuth();
+  const { login, loading, setLoading } = useAuth();
   const [error, setError] = useState("");
   const [toggleEye, setToggleEye] = useState(false);
   const location = useLocation();
@@ -42,7 +43,7 @@ const Login = () => {
   };
 
   // login with google
-  const handleGoogleLogin = async () => {
+  /* const handleGoogleLogin = async () => {
     setError("");
     try {
       const user = await loginWithGoogle();
@@ -53,7 +54,7 @@ const Login = () => {
       setLoading(false);
       setError(error.code);
     }
-  };
+  }; */
 
   // console.log({ loading, error });
   return (
@@ -133,7 +134,8 @@ const Login = () => {
             </form>
             <div className="flex flex-col w-2/4 mx-auto border-opacity-50">
               <div className="divider my-2">OR</div>
-              <div className="flex items-center justify-center">
+              <GoogleLogin setError={setError}/>
+              {/* <div className="flex items-center justify-center">
                 <button
                   type="button"
                   onClick={handleGoogleLogin}
@@ -146,7 +148,7 @@ const Login = () => {
                 >
                   <FaGoogle />
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
