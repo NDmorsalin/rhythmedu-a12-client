@@ -10,35 +10,43 @@ import {
   QrCodeIcon,
   GiftIcon,
   ChevronDoubleLeftIcon,
+  CheckBadgeIcon,
+  NewspaperIcon
 } from "@heroicons/react/24/solid";
+import { FaAddressBook, FaChalkboardTeacher, FaFolderPlus, FaHistory, FaUsersCog } from "react-icons/fa";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../../assets/logo.webp";
+import { useAuth } from "../../Provider/AuthProvider";
 
 const DashboardNav = ({ children }) => {
   const [toggleLeftNav, setToggleLeftNav] = useState();
-  const leftNavItemsMenu = [
-    { name: "Dashboard", path: "/", Icon: HomeIcon },
-    {
-      name: "Orders",
-      path: "/orders",
-      Icon: ShoppingCartIcon,
-    },
-    {
-      name: "Products",
-      path: "/products",
-      Icon: ShoppingBagIcon,
-    },
-    { name: "Customers", path: "/customers", Icon: UserIcon },
-
-    { name: "Analytics", path: "/analytics", Icon: ChartBarIcon },
-    {
-      name: "Marketing",
-      path: "/marketing",
-      Icon: MegaphoneIcon,
-    },
-  ];
-  const leftNavItemsSealsItems = [
+  const {user} = useAuth()
+ 
+  const studentNav = [
+    { name: "My Selected Classes", path: "/student/selectedclass", Icon: CheckBadgeIcon },
+    { name: "My Enrolled Classes", path: "/student/selectedclass", Icon: FaFolderPlus },
+    { name: "Payment History", path: "/student/selectedclass", Icon: FaHistory },
+  ]
+  const adminNav = [
+    { name: "Manage Users", path: "/student/selectedclass", Icon: FaUsersCog },
+    { name: "Manage Classes", path: "/student/selectedclass", Icon: NewspaperIcon },
+  ]
+  
+  const instructorNav = [
+    { name: "Add A Class", path: "/student/selectedclass", Icon: FaAddressBook },
+    { name: "My Classes", path: "/student/selectedclass", Icon: FaChalkboardTeacher },
+  ]
+  let accordingToRole 
+    if(user.role === "student"){
+      accordingToRole = studentNav
+    }else if(user.role === "admin"){
+      accordingToRole = adminNav
+    }else if(user.role === "instructor"){
+      accordingToRole = instructorNav
+    }
+  
+  const commonNav = [
     { name: "Ingratiation", path: "/", Icon: QrCodeIcon },
     {
       name: "My Store",
@@ -77,14 +85,14 @@ const DashboardNav = ({ children }) => {
                 <img src={logo} alt="" className="w-full h-full object-cover" />
               </div>
               <div className="">
-                <h1 className="text-3xl font-bold">Role</h1>
+                <h1 className="text-2xl font-bold">RhythmEdu</h1>
                 <p
                   style={{
                     lineHeight: "1",
                   }}
                   className="text-[.6rem] font-bold p-0 m-0"
                 >
-                  RhythmEdu
+                  {user.role} Dashboard
                 </p>
               </div>
             </NavLink>
@@ -98,8 +106,8 @@ const DashboardNav = ({ children }) => {
       <div className="flex">
         <div className="w-[260px] flex justify-between  h-[calc(100vh-48px)] overflow-auto flex-col">
           <div className="my-4">
-            <h2 className="text-2xl font-bold px-4">Menu</h2>
-            {leftNavItemsMenu.map((item, index) => (
+            <h2 className="text-2xl font-bold px-4"> {user.role}</h2>
+            {accordingToRole.map((item, index) => (
               <NavLink
                 to={item.path}
                 key={item.path+index}
@@ -116,7 +124,7 @@ const DashboardNav = ({ children }) => {
           </div>
           <div className="my-4">
             <h2 className="text-2xl font-bold px-4">Common</h2>
-            {leftNavItemsSealsItems.map((item, index) => (
+            {commonNav.map((item, index) => (
               <NavLink
                 to={item.path}
                 key={item.path+index}

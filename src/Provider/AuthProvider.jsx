@@ -76,8 +76,6 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        setUser(user);
-        //set jwt as email
         
         const res = await axiosInstance.post(
           "/token",
@@ -85,7 +83,8 @@ const AuthProvider = ({ children }) => {
             email: user?.email,
           }
         );
-        console.log(res.data.token);
+
+        setUser({...user,role:res.data.role});
       } else {
         setUser(null);
       }
