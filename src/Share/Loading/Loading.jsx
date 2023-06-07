@@ -6,7 +6,7 @@ const Loading = () => {
         <div className="flex items-center justify-center relative" >
           <Lottie
             animationData={animationData}
-            className="max-w-[7rem] rounded-xl  shadow-lg"
+            className="w-full rounded-xl  shadow-lg"
           /> 
           <Lottie
             animationData={animationLogoData}

@@ -8,9 +8,10 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import axios from "axios";
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/firebase.config";
+import axiosInstance from "../utility/axiosInstance";
 
 export const AuthContext = createContext();
 
@@ -77,8 +78,9 @@ const AuthProvider = ({ children }) => {
       if (user) {
         setUser(user);
         //set jwt as email
-        const res = await axios.post(
-          "https://khelagorbackend.vercel.app/api/token",
+        
+        const res = await axiosInstance.post(
+          "/token",
           {
             email: user?.email,
           }

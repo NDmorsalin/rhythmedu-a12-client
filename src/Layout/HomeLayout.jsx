@@ -16,7 +16,9 @@ const HomeLayout = () => {
   return (
     <div>
       <Header />
+      <div className="container mx-auto px-8 my-8">
       <Outlet />
+      </div>
       <Footer />
     </div>
   );
