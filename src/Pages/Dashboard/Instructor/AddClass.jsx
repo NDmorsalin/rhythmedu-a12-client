@@ -37,6 +37,7 @@ const AddClass = () => {
           classImg: cloudinaryResponce.url, // Todo : upload image to cloudinary
           status: "pending",
           feedback: "",
+          enrolledStudents:0
         };
 
         const addClassRequest = await axiosInstance.post(

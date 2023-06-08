@@ -187,7 +187,7 @@ const DashboardNav = ({ children }) => {
             ))}
           </div>
         </div>
-        <div className="flex-1">{children}</div>
+        <div className="flex-1 overflow-auto">{children}</div>
       </div>
     </>
   );
