@@ -34,8 +34,8 @@ const DashboardNav = ({ children }) => {
   ]
   
   const instructorNav = [
-    { name: "Add A Class", path: "/student/selectedclass", Icon: FaAddressBook },
-    { name: "My Classes", path: "/student/selectedclass", Icon: FaChalkboardTeacher },
+    { name: "Add A Class", path: "/dashboard/insructor/addclass", Icon: FaAddressBook },
+    { name: "My Classes", path: "/dashboard/insructor/myClasses", Icon: FaChalkboardTeacher },
   ]
   let accordingToRole 
     if(user.role === "student"){
@@ -113,7 +113,7 @@ const DashboardNav = ({ children }) => {
                 key={item.path+index}
                 className={({ isActive }) =>
                   `flex transition-all duration-300 my-1 px-4 py-2 rounded-full hover:bg-blue-500 hover:text-white items-center gap-3 text-xl ${
-                    isActive ? "bg-red-600 text-white" : ""
+                    isActive ? "bg-blue-600 text-white" : ""
                   }`
                 }
               >
@@ -158,7 +158,7 @@ const DashboardNav = ({ children }) => {
           </div>
          
         </div>
-        <div className="flex-1 bg-slate-400">{children}</div>
+        <div className="flex-1">{children}</div>
       </div>
     </>
   );
