@@ -3,9 +3,13 @@ import { useAuth } from "../../../Provider/AuthProvider";
 import { useEffect } from "react";
 import uploadImageToCloudinary from "../../../utility/uploadImageToCloudinary";
 import axiosInstance from "../../../utility/axiosInstance";
+import { useFetchInstructorClasses } from "../../../hooks/useFetchClasses";
+import { useState } from "react";
 
 const AddClass = () => {
   const { user } = useAuth();
+  const { refetch } = useFetchInstructorClasses();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -14,36 +18,44 @@ const AddClass = () => {
     reset,
   } = useForm();
 
-  const onSubmit =async (data) => {
-    
+  const onSubmit = async (data) => {
+    setLoading(true);
     if (data.classImg[0]) {
       const formData = new FormData();
       formData.append("classImg", data.classImg[0]);
 
       try {
         // Todo : upload image to cloudinary
-        /* const cloudinaryResponce = await uploadImageToCloudinary(data.classImg[0]);
-        console.log(cloudinaryResponce); */
+        const cloudinaryResponce = await uploadImageToCloudinary(
+          data.classImg[0]
+        );
+        console.log(cloudinaryResponce);
 
         const classData = {
           ...data,
-          classImg: 'cloudinaryResponce.url',// Todo : upload image to cloudinary
-          status:'pending',
-          feedback:''
+          classImg: cloudinaryResponce.url, // Todo : upload image to cloudinary
+          status: "pending",
+          feedback: "",
         };
 
-        const addClassRequest = await axiosInstance.post("/classes", classData);
-        console.log({addClassRequest});
-        
+        const addClassRequest = await axiosInstance.post(
+          "/myClasses",
+          classData
+        );
+        console.log({ addClassRequest });
+
         reset();
+        refetch();
+        setLoading(false);
       } catch (error) {
         console.error(error);
+        setLoading(false);
       }
     } else {
       console.error("No image selected");
+      setLoading(false);
     }
   };
-
 
   useEffect(() => {
     setValue("instructorEmail", user.email); // Set the default value for instructorEmail
@@ -86,7 +98,7 @@ const AddClass = () => {
             </label>
             <input
               id="classImg"
-               {...register("classImg", { required: true })}
+              {...register("classImg", { required: true })}
               type="file"
               className="file-input file-input-bordered file-input-primary w-full "
             />
@@ -170,24 +182,24 @@ const AddClass = () => {
           </div>
         </div>
 
-        {/* <div className="mb-3">
-        <label htmlFor="enrolledStudent" className="block mb-2 text-lg text-gray-800">
-          Enrolled Student
-        </label>
-        <input
-          type="text"
-          id="enrolledStudent"
-          {...register('enrolledStudent', { required: true })}
-          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-        />
-        {errors.enrolledStudent && <span className="text-red-500">Enrolled Student is required</span>}
-      </div>
- */}
         <button
           type="submit"
-          className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg focus:outline-none"
+          disabled={loading}
+          className={`w-full py-2 px-4  ${
+            loading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-600  "
+          }  text-white font-semibold rounded-lg focus:outline-none`}
         >
-          Submit
+          {loading ? (
+            <div className="flex items-center justify-center gap-3">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+              </span>
+              Loading...
+            </div>
+          ) : (
+            "Submit"
+          )}
         </button>
       </form>
     </div>

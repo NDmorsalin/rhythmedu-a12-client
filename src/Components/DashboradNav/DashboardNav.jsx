@@ -1,51 +1,81 @@
 import {
-  ShoppingCartIcon,
-  ShoppingBagIcon,
-  UserIcon,
-  ChartBarIcon,
-  HomeIcon,
-  MegaphoneIcon,
   AdjustmentsHorizontalIcon,
   ChartBarSquareIcon,
   QrCodeIcon,
   GiftIcon,
   ChevronDoubleLeftIcon,
   CheckBadgeIcon,
-  NewspaperIcon
+  NewspaperIcon,
 } from "@heroicons/react/24/solid";
-import { FaAddressBook, FaChalkboardTeacher, FaFolderPlus, FaHistory, FaUsersCog } from "react-icons/fa";
+import {
+  FaAddressBook,
+  FaChalkboardTeacher,
+  FaFolderPlus,
+  FaHistory,
+  FaUsersCog,
+} from "react-icons/fa";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../../assets/logo.webp";
 import { useAuth } from "../../Provider/AuthProvider";
+import {useFetchInstructorClasses} from "../../hooks/useFetchClasses";
 
 const DashboardNav = ({ children }) => {
   const [toggleLeftNav, setToggleLeftNav] = useState();
-  const {user} = useAuth()
- 
+  const { user } = useAuth();
+  const { myClasses } = useFetchInstructorClasses();
+
   const studentNav = [
-    { name: "My Selected Classes", path: "/student/selectedclass", Icon: CheckBadgeIcon },
-    { name: "My Enrolled Classes", path: "/student/selectedclass", Icon: FaFolderPlus },
-    { name: "Payment History", path: "/student/selectedclass", Icon: FaHistory },
-  ]
+    {
+      name: "My Selected Classes",
+      path: "/student/selectedclass",
+      Icon: CheckBadgeIcon,
+    },
+    {
+      name: "My Enrolled Classes",
+      path: "/student/selectedclass",
+      Icon: FaFolderPlus,
+    },
+    {
+      name: "Payment History",
+      path: "/student/selectedclass",
+      Icon: FaHistory,
+    },
+  ];
   const adminNav = [
     { name: "Manage Users", path: "/student/selectedclass", Icon: FaUsersCog },
-    { name: "Manage Classes", path: "/student/selectedclass", Icon: NewspaperIcon },
-  ]
-  
+    {
+      name: "Manage Classes",
+      path: "/student/selectedclass",
+      Icon: NewspaperIcon,
+    },
+  ];
+
   const instructorNav = [
-    { name: "Add A Class", path: "/dashboard/insructor/addclass", Icon: FaAddressBook },
-    { name: "My Classes", path: "/dashboard/insructor/myClasses", Icon: FaChalkboardTeacher },
-  ]
-  let accordingToRole 
-    if(user.role === "student"){
-      accordingToRole = studentNav
-    }else if(user.role === "admin"){
-      accordingToRole = adminNav
-    }else if(user.role === "instructor"){
-      accordingToRole = instructorNav
-    }
-  
+    {
+      name: "Add A Class",
+      path: "/dashboard/insructor/addclass",
+      Icon: FaAddressBook,
+    },
+    {
+      name: (
+        <>
+          My Classes <span className="badge badge-secondary">+ {myClasses?.length}</span>
+        </>
+      ),
+      path: "/dashboard/insructor/myClasses",
+      Icon: FaChalkboardTeacher,
+    },
+  ];
+  let accordingToRole;
+  if (user.role === "student") {
+    accordingToRole = studentNav;
+  } else if (user.role === "admin") {
+    accordingToRole = adminNav;
+  } else if (user.role === "instructor") {
+    accordingToRole = instructorNav;
+  }
+
   const commonNav = [
     { name: "Ingratiation", path: "/", Icon: QrCodeIcon },
     {
@@ -110,7 +140,7 @@ const DashboardNav = ({ children }) => {
             {accordingToRole.map((item, index) => (
               <NavLink
                 to={item.path}
-                key={item.path+index}
+                key={item.path + index}
                 className={({ isActive }) =>
                   `flex transition-all duration-300 my-1 px-4 py-2 rounded-full hover:bg-blue-500 hover:text-white items-center gap-3 text-xl ${
                     isActive ? "bg-blue-600 text-white" : ""
@@ -127,7 +157,7 @@ const DashboardNav = ({ children }) => {
             {commonNav.map((item, index) => (
               <NavLink
                 to={item.path}
-                key={item.path+index}
+                key={item.path + index}
                 className={({ isActive }) =>
                   `flex transition-all duration-300 my-1 px-4 py-2 rounded-full hover:bg-blue-500 hover:text-white items-center gap-3 text-xl ${
                     isActive ? "bg-red-600 text-white" : ""
@@ -144,7 +174,7 @@ const DashboardNav = ({ children }) => {
             {leftNavItemsInfo.map((item, index) => (
               <NavLink
                 to={item.path}
-                key={item.path+index}
+                key={item.path + index}
                 className={({ isActive }) =>
                   `flex transition-all duration-300 my-1 px-4 py-2 rounded-full hover:bg-blue-500 hover:text-white items-center gap-3 text-xl ${
                     isActive ? "bg-red-600 text-white" : ""
@@ -156,7 +186,6 @@ const DashboardNav = ({ children }) => {
               </NavLink>
             ))}
           </div>
-         
         </div>
         <div className="flex-1">{children}</div>
       </div>
