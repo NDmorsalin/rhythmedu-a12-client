@@ -5,6 +5,7 @@ import uploadImageToCloudinary from "../../../utility/uploadImageToCloudinary";
 import axiosInstance from "../../../utility/axiosInstance";
 import { useFetchInstructorClasses } from "../../../hooks/useFetchClasses";
 import { useState } from "react";
+import swal from "sweetalert";
 
 const AddClass = () => {
   const { user } = useAuth();
@@ -47,6 +48,12 @@ const AddClass = () => {
         reset();
         refetch();
         setLoading(false);
+        swal({
+          title: "Class Added Successfully",
+          text: " You can view your class in My Classes section or add another class",
+          type: "success",
+          timer: 2000
+        });
       } catch (error) {
         console.error(error);
         setLoading(false);

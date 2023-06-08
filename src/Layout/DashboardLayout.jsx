@@ -4,10 +4,11 @@ import DashboardNav from "../Components/DashboradNav/DashboardNav";
 const DashboardLayout = () => {
   return (
     <>
-      
-        <DashboardNav>
-          <Outlet/>
-        </DashboardNav>
+      <DashboardNav>
+        <div className="my-8 px-8">
+          <Outlet />
+        </div>
+      </DashboardNav>
     </>
   );
 };
