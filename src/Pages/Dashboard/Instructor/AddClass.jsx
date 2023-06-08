@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../../Provider/AuthProvider";
 import { useEffect } from "react";
 import uploadImageToCloudinary from "../../../utility/uploadImageToCloudinary";
+import axiosInstance from "../../../utility/axiosInstance";
 
 const AddClass = () => {
   const { user } = useAuth();
@@ -10,21 +11,31 @@ const AddClass = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm();
 
   const onSubmit =async (data) => {
-    console.log(data);
-
-
-
+    
     if (data.classImg[0]) {
       const formData = new FormData();
       formData.append("classImg", data.classImg[0]);
 
       try {
-        const cloudinaryResponce = await uploadImageToCloudinary(data.classImg[0]);
-        console.log(cloudinaryResponce);
+        // Todo : upload image to cloudinary
+        /* const cloudinaryResponce = await uploadImageToCloudinary(data.classImg[0]);
+        console.log(cloudinaryResponce); */
 
+        const classData = {
+          ...data,
+          classImg: 'cloudinaryResponce.url',// Todo : upload image to cloudinary
+          status:'pending',
+          feedback:''
+        };
+
+        const addClassRequest = await axiosInstance.post("/classes", classData);
+        console.log({addClassRequest});
+        
+        reset();
       } catch (error) {
         console.error(error);
       }
@@ -75,7 +86,7 @@ const AddClass = () => {
             </label>
             <input
               id="classImg"
-              {...register("classImg", { required: true })}
+               {...register("classImg", { required: true })}
               type="file"
               className="file-input file-input-bordered file-input-primary w-full "
             />
