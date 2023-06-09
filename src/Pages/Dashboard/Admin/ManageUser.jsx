@@ -1,14 +1,21 @@
-import { TrashIcon } from "@heroicons/react/24/solid";
-import ClassUpdateForm from "../../../Components/ClassUpdateForm/ClassUpdateForm";
+import { useAuth } from "../../../Provider/AuthProvider";
+import Loading from "../../../Share/Loading/Loading";
 import useFetchUser from "../../../hooks/useFetchUser";
 import axiosInstance from "../../../utility/axiosInstance";
 
 const ManageUser = () => {
-const {error,isError,refetch,users,isLoading} = useFetchUser()
-    console.log(users);
-    const handleUpdateRole = async ()=>{
-      const res = await axiosInstance.put(`/user/${user._id}/role`
+  const { error, isError, refetch, users, isLoading } = useFetchUser();
+  const { user: admin } = useAuth();
+  const handleUpdateRole = async (userId, role) => {
+    try {
+      const res = await axiosInstance.put(`/users/${userId}`, { role });
+      
+      refetch();
+    } catch (error) {
+      console.log(error);
     }
+  };
+  if (isLoading) return <Loading/>;
   return (
     <div className="px-8 my-8">
       <div className="w-full ">
@@ -23,6 +30,7 @@ const {error,isError,refetch,users,isLoading} = useFetchUser()
                 <th>Email</th>
                 <th>Make Instructor</th>
                 <th>Make Admin</th>
+                <th>Make Student</th>
               </tr>
             </thead>
             <tbody>
@@ -31,7 +39,6 @@ const {error,isError,refetch,users,isLoading} = useFetchUser()
                 <tr key={user._id}>
                   <th>{index + 1}</th>
                   <td>
-                    
                     <div className="avatar">
                       <div className="mask mask-squircle w-12 h-12">
                         <img
@@ -45,24 +52,48 @@ const {error,isError,refetch,users,isLoading} = useFetchUser()
                     </div>
                   </td>
                   <td>
-                    <div className="font-bold">{user?.displayName || (
+                    <div className="font-bold">
+                      {user?.name || (
                         <>
                           <span className="text-yellow-400">Anonymous</span>
                         </>
-                      )}</div>
+                      )}
+                    </div>
                   </td>
                   <td>{user?.email}</td>
                   <td>
                     <div className="">
-                      <button disabled={user?.role==='instructor'} className="btn btn-info btn-outline">Make Instructor</button>
+                      <button
+                        onClick={() => handleUpdateRole(user._id, "instructor")}
+                        disabled={user?.role === "instructor" || user?.email === admin?.email}
+                        className="btn btn-info btn-outline"
+                      >
+                        Make Instructor
+                      </button>
                     </div>
                   </td>
                   <td>
-                  <div className="">
-                      <button disabled={user?.role==='admin'} className="btn btn-primary btn-outline">Make Admin</button>
+                    <div className="">
+                      <button
+                        onClick={() => handleUpdateRole(user._id, "admin")}
+                        disabled={user?.role === "admin" || user?.email === admin?.email}
+                        className="btn btn-primary btn-outline"
+                      >
+                        Make Admin
+                      </button>
                     </div>
                   </td>
-                 
+                  <td>
+                    <div className="">
+                      <button
+                        onClick={() => handleUpdateRole(user._id, "student")}
+                        disabled={user?.role === "student" || user?.email === admin?.email}
+                        className="btn btn-warning btn-outline"
+                      >
+                        Make Student
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

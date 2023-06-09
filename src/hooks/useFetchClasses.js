@@ -3,13 +3,18 @@ import {
 } from '@tanstack/react-query'
 import { useAuth } from '../Provider/AuthProvider'
 import axiosInstance from '../utility/axiosInstance'
-const useFetchClasses = () => {
+const useFetchAllClasses = () => {
   const { user } = useAuth()
   const { isLoading, isError, refetch, data: classes = [], error } = useQuery({
     queryKey: ['classes', user.email],
     queryFn: async () => {
-      const response = await axiosInstance.get('/classes')
-      return response.data
+      if (user.role === 'admin') {
+
+        const response = await axiosInstance.get('/classes')
+        return response.data
+      } else {
+        return []
+      }
     },
   })
   return { isLoading, isError, refetch, classes, error }
@@ -32,4 +37,4 @@ const useFetchInstructorClasses = () => {
   return { isLoading, isError, refetch, myClasses, error }
 }
 
-export { useFetchClasses, useFetchInstructorClasses }
+export { useFetchAllClasses, useFetchInstructorClasses }
