@@ -165,7 +165,7 @@ const ClassUpdateForm = ({ refetch, addedClass }) => {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-2 px-4  ${
+          className={`w-full py-2 px-4 my-8  ${
             loading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-600  "
           }  text-white font-semibold rounded-lg focus:outline-none`}
         >

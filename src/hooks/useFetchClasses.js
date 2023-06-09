@@ -23,7 +23,7 @@ const useFetchAllClasses = () => {
 const useFetchInstructorClasses = () => {
   const { user } = useAuth()
   const { isLoading, isError, refetch, data: myClasses = [], error } = useQuery({
-    queryKey: ['classes', user.email],
+    queryKey: ['InstructorClasses', user.email],
     queryFn: async () => {
       if (user.role === 'instructor') {
         const response = await axiosInstance.get('/myClasses')
