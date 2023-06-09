@@ -87,7 +87,23 @@ const MyClasses = () => {
                     <div className="font-bold">{item?.availableSeats}</div>
                   </td>
                   <td>
-                    <div className="font-bold">{item?.status}</div>
+                    <div className="font-bold">
+                      {item?.status === "approved" && (
+                        <>
+                          <span className="text-green-400">Approved</span>
+                        </>
+                      )}
+                      {item?.status === "denied" && (
+                        <>
+                          <span className="text-red-400">Denied</span>
+                        </>
+                      )}
+                      {item?.status === "pending" && (
+                        <>
+                          <span className="text-yellow-400">Pending</span>
+                        </>
+                      )}
+                    </div>
                   </td>
                   <td>
                     <div className="font-bold">{item?.enrolledStudents}</div>

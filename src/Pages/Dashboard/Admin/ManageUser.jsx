@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAuth } from "../../../Provider/AuthProvider";
 import Loading from "../../../Share/Loading/Loading";
 import useFetchUser from "../../../hooks/useFetchUser";
@@ -6,16 +7,20 @@ import axiosInstance from "../../../utility/axiosInstance";
 const ManageUser = () => {
   const { error, isError, refetch, users, isLoading } = useFetchUser();
   const { user: admin } = useAuth();
+  const [loading, setLoading] = useState(false);
   const handleUpdateRole = async (userId, role) => {
+    setLoading(true);
     try {
       const res = await axiosInstance.put(`/admin/users/${userId}`, { role });
-      
+
       refetch();
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
-  if (isLoading) return <Loading/>;
+  if (isLoading) return <Loading />;
   return (
     <div className="px-8 my-8">
       <div className="w-full ">
@@ -65,7 +70,11 @@ const ManageUser = () => {
                     <div className="">
                       <button
                         onClick={() => handleUpdateRole(user._id, "instructor")}
-                        disabled={user?.role === "instructor" || user?.email === admin?.email}
+                        disabled={
+                          user?.role === "instructor" ||
+                          user?.email === admin?.email ||
+                          loading
+                        }
                         className="btn btn-info btn-outline"
                       >
                         Make Instructor
@@ -76,7 +85,11 @@ const ManageUser = () => {
                     <div className="">
                       <button
                         onClick={() => handleUpdateRole(user._id, "admin")}
-                        disabled={user?.role === "admin" || user?.email === admin?.email}
+                        disabled={
+                          user?.role === "admin" ||
+                          user?.email === admin?.email ||
+                          loading
+                        }
                         className="btn btn-primary btn-outline"
                       >
                         Make Admin
@@ -87,7 +100,11 @@ const ManageUser = () => {
                     <div className="">
                       <button
                         onClick={() => handleUpdateRole(user._id, "student")}
-                        disabled={user?.role === "student" || user?.email === admin?.email}
+                        disabled={
+                          user?.role === "student" ||
+                          user?.email === admin?.email ||
+                          loading
+                        }
                         className="btn btn-warning btn-outline"
                       >
                         Make Student

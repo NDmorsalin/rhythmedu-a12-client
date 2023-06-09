@@ -1,11 +1,26 @@
 import { useFetchAllClasses } from "../../../hooks/useFetchClasses";
 import Loading from "../../../Share/Loading/Loading";
 import SendFeedback from "../../../Components/SendFeedback/SendFeedback";
+import axiosInstance from "../../../utility/axiosInstance";
+import { useState } from "react";
 
 const ManageClasses = () => {
   const { classes, error, isError, isLoading, refetch } = useFetchAllClasses();
-  console.log(classes,error, isError,);
-
+  const [loading, setLoading] = useState(false);
+  
+  const handleStatus = async (classId, status) => {
+    setLoading(true);
+    try {
+      const res = await axiosInstance.patch(`/admin/classes/${classId}`, {
+        status,
+      });
+      refetch();
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
 
   if (isLoading) return <Loading />;
   return (
@@ -62,20 +77,56 @@ const ManageClasses = () => {
 
                   <td>${classItem?.price?.toFixed(2)}</td>
                   <td>
-                    <div className="font-bold">{classItem?.status}</div>
+                    <div className="font-bold">
+                    {classItem?.status === "approved" && (
+                        <>
+                          <span className="text-green-400">Approved</span>
+                        </>
+                      )}
+                      {classItem?.status === "denied" && (
+                        <>
+                          <span className="text-red-400">Denied</span>
+                        </>
+                      )}
+                      {classItem?.status === "pending" && (
+                        <>
+                          <span className="text-yellow-400">Pending</span>
+                        </>
+                      )}
+                      </div>
                   </td>
 
                   <td>
                     <div className="font-bold">
-                      <button className="btn btn-outline btn-primary">
-                        Approved
+                      <button
+                        disabled={classItem?.status !== "pending"||loading}
+                        onClick={() => handleStatus(classItem?._id, "approved")}
+                        className="btn btn-outline btn-primary"
+                      >
+                        {classItem?.status === "approved" ? (
+                          <>
+                            <span className="text-green-500">Approved</span>
+                          </>
+                        ) : (
+                          "Approve"
+                        )}
                       </button>
                     </div>
                   </td>
                   <td>
                     <div className="font-bold">
-                      <button className="btn btn-outline btn-warning">
-                        Denied
+                      <button
+                        onClick={() => handleStatus(classItem?._id, "denied")}
+                        disabled={classItem?.status !== "pending"||loading}
+                        className="btn btn-outline btn-warning"
+                      >
+                        {classItem?.status === "denied" ? (
+                          <>
+                            <span className="text-yellow-500">Denied</span>
+                          </>
+                        ) : (
+                          "Deny"
+                        )}
                       </button>
                     </div>
                   </td>
