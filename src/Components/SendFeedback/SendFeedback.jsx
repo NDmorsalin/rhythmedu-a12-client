@@ -18,6 +18,8 @@ const SendFeedback = ({ refetch, classItem }) => {
     try {
       
         console.log("inside send feedback file", { data });
+        const responsce = await axiosInstance.put(`/admin/classes/${classItem._id}`,data);
+        console.log('send feedbacke',{ responsce });
         refetch();
         setLoading(false);
         swal({

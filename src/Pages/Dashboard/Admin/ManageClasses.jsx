@@ -5,6 +5,8 @@ import SendFeedback from "../../../Components/SendFeedback/SendFeedback";
 const ManageClasses = () => {
   const { classes, error, isError, isLoading, refetch } = useFetchAllClasses();
   console.log(classes,error, isError,);
+
+
   if (isLoading) return <Loading />;
   return (
     <div className="px-8 my-8">

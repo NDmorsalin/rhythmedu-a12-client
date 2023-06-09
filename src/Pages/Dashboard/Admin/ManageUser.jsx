@@ -8,7 +8,7 @@ const ManageUser = () => {
   const { user: admin } = useAuth();
   const handleUpdateRole = async (userId, role) => {
     try {
-      const res = await axiosInstance.put(`/users/${userId}`, { role });
+      const res = await axiosInstance.put(`/admin/users/${userId}`, { role });
       
       refetch();
     } catch (error) {
