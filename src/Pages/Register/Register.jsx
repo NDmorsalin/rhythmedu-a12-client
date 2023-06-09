@@ -15,7 +15,7 @@ const Register = () => {
   const [toggleEye, setToggleEye] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
+  
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
@@ -40,7 +40,7 @@ const Register = () => {
         name,
         photoUrl,
       });
-      console.log(dbUserInfo);
+      console.log({ dbUserInfo });
       navigate(location?.state?.from?.pathname || "/");
     } catch (error) {
       setError(error.message);

@@ -18,12 +18,12 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../../assets/logo.webp";
 import { useAuth } from "../../Provider/AuthProvider";
-import {useFetchInstructorClasses} from "../../hooks/useFetchClasses";
+import { useFetchInstructorClasses } from "../../hooks/useFetchClasses";
 
 const DashboardNav = ({ children }) => {
   const [toggleLeftNav, setToggleLeftNav] = useState();
   const { user } = useAuth();
-  const { myClasses } = useFetchInstructorClasses();
+  const { myClasses } =  useFetchInstructorClasses();
 
   const studentNav = [
     {
@@ -60,7 +60,8 @@ const DashboardNav = ({ children }) => {
     {
       name: (
         <>
-          My Classes <span className="badge badge-secondary">+ {myClasses?.length}</span>
+          My Classes{" "}
+          <span className="badge badge-secondary">+ {myClasses?.length}</span>
         </>
       ),
       path: "/dashboard/insructor/myClasses",

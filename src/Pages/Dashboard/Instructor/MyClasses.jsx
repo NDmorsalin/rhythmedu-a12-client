@@ -1,12 +1,48 @@
-
 import { useFetchInstructorClasses } from "../../../hooks/useFetchClasses";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import ClassUpdateForm from "../../../Components/ClassUpdateForm/ClassUpdateForm";
+import axiosInstance from "../../../utility/axiosInstance";
 
 const MyClasses = () => {
   const { myClasses, error, isError, isLoading, refetch } =
     useFetchInstructorClasses();
-   
+
+  const handleDeleteClass = async (classId) => {
+    try {
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this Class info!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(async (willDelete) => {
+        if (willDelete) {
+          const deleteClassRequest = await axiosInstance.delete(
+            `/myClasses/${classId}`
+          );
+          console.log({ deleteClassRequest });
+          refetch();
+
+          swal("Poof! Your imaginary file has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your Class is safe!");
+        }
+      });
+    } catch (error) {
+      console.error(error);
+
+      swal({
+        title: "Class Deleted Failed",
+        text: " there is some error while deleting the class",
+        icon: "error",
+
+        timer: 2000,
+      });
+    }
+  };
+
   return (
     <div className="px-8 my-8">
       <div className="w-full ">
@@ -116,7 +152,10 @@ const MyClasses = () => {
                       />
                       <div className="modal ">
                         <div className="modal-box max-w-2xl">
-                          <ClassUpdateForm refetch={refetch} addedClass={item}/>
+                          <ClassUpdateForm
+                            refetch={refetch}
+                            addedClass={item}
+                          />
 
                           <div className="modal-action">
                             <label
@@ -132,7 +171,12 @@ const MyClasses = () => {
                   </td>
                   <td>
                     <div className="font-bold">
-                      <TrashIcon className="w-6 h-6 text-red-500" />
+                      <button
+                        onClick={() => handleDeleteClass(item._id)}
+                        className=""
+                      >
+                        <TrashIcon className="w-6 h-6 text-red-500" />
+                      </button>
                     </div>
                   </td>
                 </tr>

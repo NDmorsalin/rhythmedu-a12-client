@@ -71,7 +71,7 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signOut(auth);
   };
-
+  
   // set user on auth state change
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -85,6 +85,7 @@ const AuthProvider = ({ children }) => {
         );
 
         setUser({...user,role:res.data.role});
+        setLoading(false);
       } else {
         setUser(null);
       }

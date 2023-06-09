@@ -13,6 +13,7 @@ import Classes from "../Pages/Classes/Classes";
 import PrivateRoute from "../Layout/PrivateRoute";
 import AddClass from "../Pages/Dashboard/Instructor/AddClass";
 import MyClasses from "../Pages/Dashboard/Instructor/MyClasses";
+import InstructorsLayout from "../Layout/InstructorsLayout";
 
 const router = createBrowserRouter([
   {
@@ -66,12 +67,18 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "insructor/addclass",
-        element: <AddClass />,
-      },
-      {
-        path: "insructor/myClasses",
-        element: <MyClasses />,
+        path: "insructor",
+        element: <InstructorsLayout />,
+        children: [
+          {
+            path: "addclass",
+            element: <AddClass />,
+          },
+          {
+            path: "myClasses",
+            element: <MyClasses />,
+          },
+        ],
       },
     ],
   },
