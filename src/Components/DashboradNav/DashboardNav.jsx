@@ -43,10 +43,10 @@ const DashboardNav = ({ children }) => {
     },
   ];
   const adminNav = [
-    { name: "Manage Users", path: "/student/selectedclass", Icon: FaUsersCog },
+    { name: "Manage Users", path: "/dashboard/admin/manageUser", Icon: FaUsersCog },
     {
       name: "Manage Classes",
-      path: "/student/selectedclass",
+      path: "/dashboard/admin/manageClasses",
       Icon: NewspaperIcon,
     },
   ];
