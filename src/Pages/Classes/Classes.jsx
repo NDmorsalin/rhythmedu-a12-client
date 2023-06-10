@@ -8,15 +8,47 @@ const Classes = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { data: allApprovedClasses, isLoading } = useQuery({
-    queryKey: ["AllApprovedClasses"],
+  /* 
+  const {  isError, refetch, data: studentSelectedClasses = [], error } = useQuery({
+    queryKey: ['studentSelectedClasses', user?.email],
     queryFn: async () => {
-      const res = await axiosInstance.get("/classes");
-      return res.data;
+        if (user?.role === 'student') {
+
+            const response = await axiosInstance.get('/students', {
+                headers: {
+                    studentId: user?.uid
+                }
+            })
+
+            return response.data
+        } else {
+            return []
+        }
+    },
+
+})
+console.log(studentSelectedClasses); */
+
+  const { data: allApprovedClasses, isLoading } = useQuery({
+    queryKey: ["AllApprovedClasses",user?.uid],
+    queryFn: async () => {
+      if (user) {
+        const res = await axiosInstance.get("/classes", {
+          headers: {
+            studentId: user?.uid,
+          },
+        });
+        console.log('with user',res);
+        return res.data;
+      } else {
+        const res = await axiosInstance.get("/classes");
+        console.log('not user',res);
+        return res.data;
+      }
     },
   });
 
-  const handleSelectClass = (classId) => {
+  const handleSelectClass = async (classId) => {
     console.log(classId);
     if (!user) {
       swal({
@@ -27,29 +59,41 @@ const Classes = () => {
       }).then((willDelete) => {
         if (willDelete) {
           swal({
-            title:"Now you are redirect to login page!", 
-            text:"after login you will redirect to this page again!",
+            title: "Now you are redirect to login page!",
+            text: "after login you will redirect to this page again!",
             icon: "success",
             buttons: false,
             timer: 2000,
           });
           navigate("/auth/login", { state: { from: location } });
+          return;
         } else {
           swal("Your imaginary file is safe!", {
             timer: 3000,
           });
+          return;
         }
       });
+      return;
     }
+    const selectedClassSavedInfo = await axiosInstance.post("/students", {
+      studentId: user.uid,
+      classId,
+    });
+    console.log(selectedClassSavedInfo);
   };
-
-  console.log({ user });
+  // console.log({ user });
   if (isLoading) return <Loading />;
   return (
     <div>
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         {allApprovedClasses?.map((classItem) => (
-          <div key={classItem?._id} className="card  bg-base-100 shadow-xl">
+          <div
+            key={classItem?._id}
+            className={`${
+              classItem?.availableSeats <= 0 ? "bg-red-100" : "bg-base-100"
+            }"card   shadow-xl `}
+          >
             <figure>
               <img
                 src={classItem?.classImg}

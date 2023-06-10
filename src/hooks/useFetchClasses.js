@@ -6,9 +6,9 @@ import axiosInstance from '../utility/axiosInstance'
 const useFetchAllClasses = () => {
   const { user } = useAuth()
   const { isLoading, isError, refetch, data: classes = [], error } = useQuery({
-    queryKey: ['classes', user.email],
+    queryKey: ['classes', user?.email],
     queryFn: async () => {
-      if (user.role === 'admin') {
+      if (user?.role === 'admin') {
 
         const response = await axiosInstance.get('/classes')
         return response.data
