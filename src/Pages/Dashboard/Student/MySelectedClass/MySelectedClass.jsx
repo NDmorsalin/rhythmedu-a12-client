@@ -4,6 +4,7 @@ import axiosInstance from "../../../../utility/axiosInstance";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { FaCreditCard } from "react-icons/fa";
 import swal from "sweetalert";
+import { Link } from "react-router-dom";
 
 const MySelectedClass = () => {
   const { user } = useAuth();
@@ -37,10 +38,10 @@ const MySelectedClass = () => {
         if (willDelete) {
           const deleteClassRequest = await axiosInstance.delete(`/students`, {
             headers: {
-              deleteclassid: classId
+              deleteclassid: classId,
             },
           });
-            refetch();
+          refetch();
           swal({
             title: "Class Deleted Successfully",
             text: "You can see your selected class in my selected class",
@@ -49,7 +50,7 @@ const MySelectedClass = () => {
             timer: 2000,
           });
         } else {
-          swal( {
+          swal({
             title: "Your Class is safe!",
             icon: "success",
             buttons: false,
@@ -69,6 +70,7 @@ const MySelectedClass = () => {
       });
     }
   };
+
   return (
     <div>
       <h1>My Selected Class</h1>
@@ -128,12 +130,13 @@ const MySelectedClass = () => {
                     </td>
                     <td>
                       <div className="font-bold">
-                        <button
-                          onClick={() => handleDeleteClass(item?._id)}
+                        <Link
+                          to={"/dashboard/students/payment"}
+                          state={{ classId: item?._id, price: item?.price }}
                           className=""
                         >
                           <FaCreditCard className="w-6 h-6 text-blue-600" />
-                        </button>
+                        </Link>
                       </div>
                     </td>
                   </tr>

@@ -19,6 +19,7 @@ import ManageUser from "../Pages/Dashboard/Admin/ManageUser";
 import ManageClasses from "../Pages/Dashboard/Admin/ManageClasses";
 import StudentLayout from "../Layout/StudentLayout";
 import MySelectedClass from "../Pages/Dashboard/Student/MySelectedClass/MySelectedClass";
+import PaymentPage from "../Pages/Dashboard/Student/PaymentPage/PaymentPage";
 
 const router = createBrowserRouter([
   {
@@ -110,6 +111,10 @@ const router = createBrowserRouter([
           {
             path: "manageClasses",
             element: <ManageClasses />,
+          },
+          {
+            path: "payment",
+            element: <PaymentPage />,
           },
         ],
       },
