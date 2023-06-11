@@ -3,6 +3,7 @@ import { useAuth } from "../../../../Provider/AuthProvider";
 import axiosInstance from "../../../../utility/axiosInstance";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { FaCreditCard } from "react-icons/fa";
+import swal from "sweetalert";
 
 const MySelectedClass = () => {
   const { user } = useAuth();
@@ -24,7 +25,50 @@ const MySelectedClass = () => {
     },
   });
 
+  const handleDeleteClass = async (classId) => {
+    try {
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this Class info!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(async (willDelete) => {
+        if (willDelete) {
+          const deleteClassRequest = await axiosInstance.delete(`/students`, {
+            headers: {
+              deleteclassid: classId
+            },
+          });
+            refetch();
+          swal({
+            title: "Class Deleted Successfully",
+            text: "You can see your selected class in my selected class",
+            icon: "success",
+            buttons: false,
+            timer: 2000,
+          });
+        } else {
+          swal( {
+            title: "Your Class is safe!",
+            icon: "success",
+            buttons: false,
+            timer: 2000,
+          });
+        }
+      });
+    } catch (error) {
+      console.log({ error });
 
+      swal({
+        title: "Class Deleted Failed",
+        text: " there is some error while deleting the class",
+        icon: "error",
+
+        timer: 2000,
+      });
+    }
+  };
   return (
     <div>
       <h1>My Selected Class</h1>
