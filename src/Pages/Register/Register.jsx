@@ -35,7 +35,7 @@ const Register = () => {
       // console.log({email,password});
       console.log(user);
       const dbUserInfo = await axiosInstance.post("/users", {
-        email,
+        email:email.toLowerCase(),
         role: "student",
         name,
         photoUrl,

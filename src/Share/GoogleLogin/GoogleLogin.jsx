@@ -16,7 +16,7 @@ const GoogleLogin = ({setError}) => {
       const {user} = await loginWithGoogle();
       console.log(user);
        const dbUserInfo = await axiosInstance.post("/users", {
-        email:user.email,
+        email:user.email.toLowerCase(),
         name:user.displayName,
         photoUrl:user.photoURL,
       }); 
