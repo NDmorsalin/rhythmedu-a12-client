@@ -27,13 +27,13 @@ const DashboardNav = ({ children }) => {
 
   const studentNav = [
     {
-      name: "My Selected Classes",
-      path: "/student/selectedclass",
+      name: "Selected Classes",
+      path: "/dashboard/students/mySelectedClass",
       Icon: FaFolderPlus,
     },
     {
-      name: "My Enrolled Classes",
-      path: "/student/selectedclass",
+      name: "Enrolled Classes",
+      path: "/dashboard/students/selectedclass",
       Icon:  CheckBadgeIcon,
     },
     {

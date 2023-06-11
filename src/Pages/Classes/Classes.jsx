@@ -40,11 +40,11 @@ console.log(studentSelectedClasses); */
             studentId: user?.uid,
           },
         });
-        console.log("with user", res);
+        // console.log("with user", res);
         return res.data;
       } else {
         const res = await axiosInstance.get("/classes");
-        console.log("not user", res);
+        // console.log("not user", res);
         return res.data;
       }
     },

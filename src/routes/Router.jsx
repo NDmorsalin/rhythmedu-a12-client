@@ -17,6 +17,8 @@ import InstructorsLayout from "../Layout/InstructorsLayout";
 import AdminLayout from "../Layout/AdminLayout";
 import ManageUser from "../Pages/Dashboard/Admin/ManageUser";
 import ManageClasses from "../Pages/Dashboard/Admin/ManageClasses";
+import StudentLayout from "../Layout/StudentLayout";
+import MySelectedClass from "../Pages/Dashboard/Student/MySelectedClass/MySelectedClass";
 
 const router = createBrowserRouter([
   {
@@ -90,6 +92,20 @@ const router = createBrowserRouter([
           {
             path: "manageUser",
             element: <ManageUser />,
+          },
+          {
+            path: "manageClasses",
+            element: <ManageClasses />,
+          },
+        ],
+      },
+      {
+        path: "students",
+        element: <StudentLayout />,
+        children: [
+          {
+            path: "mySelectedClass",
+            element: <MySelectedClass />,
           },
           {
             path: "manageClasses",

@@ -47,7 +47,7 @@ const MyClasses = () => {
     <div className="px-8 my-8">
       <div className="w-full ">
         <div className="overflow-auto">
-          <table className="table  mx-auto">
+          <table className="table table-zebra   mx-auto">
             {/* head */}
             <thead>
               <tr>

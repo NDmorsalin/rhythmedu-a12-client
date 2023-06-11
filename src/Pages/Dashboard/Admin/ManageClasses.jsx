@@ -7,7 +7,7 @@ import { useState } from "react";
 const ManageClasses = () => {
   const { classes, error, isError, isLoading, refetch } = useFetchAllClasses();
   const [loading, setLoading] = useState(false);
-  
+
   const handleStatus = async (classId, status) => {
     setLoading(true);
     try {
@@ -27,7 +27,7 @@ const ManageClasses = () => {
     <div className="px-8 my-8">
       <div className="w-full ">
         <div className="overflow-auto">
-          <table className="table  mx-auto">
+          <table className="table table-zebra   mx-auto">
             {/* head */}
             <thead>
               <tr>
@@ -78,7 +78,7 @@ const ManageClasses = () => {
                   <td>${classItem?.price?.toFixed(2)}</td>
                   <td>
                     <div className="font-bold">
-                    {classItem?.status === "approved" && (
+                      {classItem?.status === "approved" && (
                         <>
                           <span className="text-green-400">Approved</span>
                         </>
@@ -93,13 +93,13 @@ const ManageClasses = () => {
                           <span className="text-yellow-400">Pending</span>
                         </>
                       )}
-                      </div>
+                    </div>
                   </td>
 
                   <td>
                     <div className="font-bold">
                       <button
-                        disabled={classItem?.status !== "pending"||loading}
+                        disabled={classItem?.status !== "pending" || loading}
                         onClick={() => handleStatus(classItem?._id, "approved")}
                         className="btn btn-outline btn-primary"
                       >
@@ -117,7 +117,7 @@ const ManageClasses = () => {
                     <div className="font-bold">
                       <button
                         onClick={() => handleStatus(classItem?._id, "denied")}
-                        disabled={classItem?.status !== "pending"||loading}
+                        disabled={classItem?.status !== "pending" || loading}
                         className="btn btn-outline btn-warning"
                       >
                         {classItem?.status === "denied" ? (
