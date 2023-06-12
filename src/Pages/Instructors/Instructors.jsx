@@ -4,7 +4,7 @@ import Instructor from "./Instructor/Instructor";
 
 const Instructors = () => {
   const { allInstructors, isLoading } = useFetchAllInstructor();
-  // console.log(allInstructors);
+  console.log(allInstructors);
 
   if (isLoading) return <Loading />;
   return (

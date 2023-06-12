@@ -114,7 +114,7 @@ const MySelectedClass = () => {
                     <td>
                       <div className="font-bold">
                         <Link
-                          to={"/dashboard/students/payment"}
+                          to={"/dashboard/student/payment"}
                           state={{
                             selectedClass: item,
                           }}

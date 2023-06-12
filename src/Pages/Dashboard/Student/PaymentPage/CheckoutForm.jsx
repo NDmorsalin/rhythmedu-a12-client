@@ -106,7 +106,8 @@ const CheckoutForm = () => {
       );
       refetchSelected();
       refetchEnroll();
-      navigate("/dashboard/students/mySelectedClass");
+      navigate("/dashboard/student");
+      // navigate("/dashboard/students/mySelectedClass");
     }
     setProcessing(false);
   };

@@ -21,6 +21,7 @@ import MySelectedClass from "../Pages/Dashboard/Student/MySelectedClass/MySelect
 import PaymentPage from "../Pages/Dashboard/Student/PaymentPage/PaymentPage";
 import MyEnrolledClasses from "../Pages/Dashboard/Student/MyEnrolledClasses/MyEnrolledClasses";
 import PaymentHistory from "../Pages/Dashboard/Student/PaymentPage/PaymentHistory/PaymentHistory";
+import InstructorClasses from "../Pages/Instructors/InstructorClasses/InstructorClasses";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "instructors",
         element: <Instructors />,
+      },
+      {
+        path: "instructors/:instructorId/Classes",
+        element: <InstructorClasses />,
       },
       {
         path: "/Classes",
@@ -130,66 +135,6 @@ const router = createBrowserRouter([
     ],
   },
 
-  {
-    path: "/testboard",
-    element: (
-      <PrivateRoute>
-        <DashboardLayout />
-      </PrivateRoute>
-    ),
-    children: [
-      {
-        path: "insructor",
-        element: <InstructorsLayout />,
-        children: [
-          {
-            path: "addclass",
-            element: <AddClass />,
-          },
-          {
-            path: "myClasses",
-            element: <MyClasses />,
-          },
-        ],
-      },
-      {
-        path: "admin",
-        element: <AdminLayout />,
-        children: [
-          {
-            path: "manageUser",
-            element: <ManageUser />,
-          },
-          {
-            path: "manageClasses",
-            element: <ManageClasses />,
-          },
-        ],
-      },
-      {
-        path: "students",
-        element: <StudentLayout />,
-        children: [
-          {
-            path: "mySelectedClass",
-            element: <MySelectedClass />,
-          },
-          {
-            path: "enrolledClass",
-            element: <MyEnrolledClasses />,
-          },
-          {
-            path: "payment",
-            element: <PaymentPage />,
-          },
-          {
-            path: "paymenthistory",
-            element: <PaymentHistory />,
-          },
-        ],
-      },
-    ],
-  },
 ]);
 
 export default router;

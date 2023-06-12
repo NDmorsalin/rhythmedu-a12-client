@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Instructor = ({ instructor }) => {
   return (
     <div>
@@ -30,11 +32,13 @@ const Instructor = ({ instructor }) => {
               Classes:{instructor?.classes?.length}
             </p>
           </div>
-          <button
+          <Link
+            to={`/instructors/${instructor?._id}/Classes`}
+            state={{ instructor }}
             className={`btn btn-outline btn-info !text-blue-600 hover:!text-white`}
           >
             See Classes
-          </button>
+          </Link>
         </div>
       </div>
     </div>
