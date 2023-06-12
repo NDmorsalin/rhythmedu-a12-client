@@ -33,7 +33,7 @@ const DashboardNav = ({ children }) => {
     },
     {
       name: "Enrolled Classes",
-      path: "/dashboard/students/selectedclass",
+      path: "/dashboard/students/enrolledClass",
       Icon:  CheckBadgeIcon,
     },
     {

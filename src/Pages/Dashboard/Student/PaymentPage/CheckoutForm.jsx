@@ -1,17 +1,30 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import "./Checkout.module.css";
 import axiosInstance from "../../../../utility/axiosInstance";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useAuth } from "../../../../Provider/AuthProvider";
+import swal from "sweetalert";
+import { utcTimeSendToDb } from "../../../../utility/handleItme";
 
 const CheckoutForm = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [clientSecret, setClientSecret] = useState(null);
   const [processing, setProcessing] = useState(false);
   const { user } = useAuth();
-  const { price, classId } = location.state;
+
+  const {
+    className,
+    classImg,
+    instructorName,
+    instructorEmail,
+    price,
+    studentId,
+    classId,
+  } = location.state.selectedClass;
+
   const [error, setError] = useState(null);
 
   const stripe = useStripe();
@@ -35,7 +48,7 @@ const CheckoutForm = () => {
     if (card == null) {
       return;
     }
-    setProcessing(true)
+    setProcessing(true);
     // Use your card Element with other Stripe.js APIs
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
@@ -44,7 +57,7 @@ const CheckoutForm = () => {
 
     if (error) {
       console.log("[error]", error);
-        setError(error.message)
+      setError(error.message);
     } else {
       console.log("[PaymentMethod]", paymentMethod);
     }
@@ -62,11 +75,34 @@ const CheckoutForm = () => {
 
     if (errorConfirmCard) {
       console.log("[error]", errorConfirmCard);
-      setError(errorConfirmCard.message)
+      setError(errorConfirmCard.message);
     } else {
-      console.log("[intend]", paymentIntent);
+      swal({
+        title: "Payment Successful",
+        text: "You can see your selected class in my selected class",
+        icon: "success",
+        buttons: false,
+        timer: 2000,
+      });
+
+      const afterSuccessfulPayment = await axiosInstance.post(
+        "/paymentsuccessful",
+        {
+          className,
+          classImg,
+          instructorName,
+          instructorEmail,
+          price,
+          studentId,
+          classId,
+          transactionId: paymentIntent?.id,
+          paymentStatus: "paid",
+          paymentDate: utcTimeSendToDb(),
+        }
+      );
+      navigate("/dashboard/students/mySelectedClass");
     }
-    setProcessing(false)
+    setProcessing(false);
   };
 
   useEffect(() => {
@@ -84,39 +120,40 @@ const CheckoutForm = () => {
   }, [classId, price]);
 
   return (
-   <>
-    <h1 className="text-2xl font-bold text-center">You are paying ${price.toFixed(2)}</h1>
-    <form
-      className="max-w-sm mx-auto p-2 border border-blue-600 rounded-lg"
-      onSubmit={handleSubmit}
-    >
-      <CardElement
-        options={{
-          style: {
-            base: {
-              fontSize: "16px",
-              color: "#424770",
-              "::placeholder": {
-                color: "#aab7c4",
+    <>
+      <h1 className="text-2xl font-bold text-center">
+        You are paying ${price.toFixed(2)}
+      </h1>
+      <form
+        className="max-w-sm mx-auto mt-5 p-2 border border-blue-600 rounded-lg"
+        onSubmit={handleSubmit}
+      >
+        <CardElement
+          options={{
+            style: {
+              base: {
+                fontSize: "16px",
+                color: "#424770",
+                "::placeholder": {
+                  color: "#aab7c4",
+                },
+              },
+              invalid: {
+                color: "#9e2146",
               },
             },
-            invalid: {
-              color: "#9e2146",
-            },
-          },
-        }}
-      />
-      <button
-        className="bg-blue-500 px-8 mt-8 hover:bg-blue-700"
-        type="submit"
-        disabled={!stripe||processing||!clientSecret}
-      >
-        Pay
-      </button>
-<p className="text-red-500">{error}</p>
-    </form>
-    
-   </>
+          }}
+        />
+        <button
+          className="bg-blue-500 px-8 py-2 rounded-lg text-white mt-8 hover:bg-blue-700"
+          type="submit"
+          disabled={!stripe || processing || !clientSecret}
+        >
+          {processing ? "processing..." : "pay"}
+        </button>
+      </form>
+      <p className="text-red-500 text-center">{error}</p>
+    </>
   );
 };
 

@@ -132,7 +132,9 @@ const MySelectedClass = () => {
                       <div className="font-bold">
                         <Link
                           to={"/dashboard/students/payment"}
-                          state={{ classId: item?._id, price: item?.price }}
+                          state={{
+                            selectedClass: item,
+                          }}
                           className=""
                         >
                           <FaCreditCard className="w-6 h-6 text-blue-600" />
