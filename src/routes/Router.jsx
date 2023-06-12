@@ -7,7 +7,6 @@ import Home from "../Pages/Home/Home";
 import Error404Page from "../Pages/Error/Error";
 import AboutUs from "../Pages/AboutUs/AboutUs";
 import DashboardLayout from "../Layout/DashboardLayout";
-import Dashboard from "../Pages/Dashboard/Dashboard";
 import Instructors from "../Pages/Instructors/Instructors";
 import Classes from "../Pages/Classes/Classes";
 import PrivateRoute from "../Layout/PrivateRoute";
@@ -62,18 +61,83 @@ const router = createBrowserRouter([
       },
     ],
   },
+
   {
-    path: "/dashboard",
+    path: "/dashboard/instructor",
+    element: (
+      <PrivateRoute>
+        <InstructorsLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "",
+        // path: "addclass",
+        element: <AddClass />,
+      },
+      {
+        path: "myClasses",
+        element: <MyClasses />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard/admin",
+    element: (
+      <PrivateRoute>
+        {" "}
+        <AdminLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "",
+        // path: "manageUser",
+        element: <ManageUser />,
+      },
+      {
+        path: "manageClasses",
+        element: <ManageClasses />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard/student",
+    element: (
+      <PrivateRoute>
+        {" "}
+        <StudentLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "",
+        // path: "mySelectedClass",
+        element: <MySelectedClass />,
+      },
+      {
+        path: "enrolledClass",
+        element: <MyEnrolledClasses />,
+      },
+      {
+        path: "payment",
+        element: <PaymentPage />,
+      },
+      {
+        path: "paymenthistory",
+        element: <PaymentHistory />,
+      },
+    ],
+  },
+
+  {
+    path: "/testboard",
     element: (
       <PrivateRoute>
         <DashboardLayout />
       </PrivateRoute>
     ),
     children: [
-      {
-        path: "",
-        element: <Dashboard />,
-      },
       {
         path: "insructor",
         element: <InstructorsLayout />,

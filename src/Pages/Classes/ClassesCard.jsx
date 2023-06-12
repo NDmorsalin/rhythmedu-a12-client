@@ -28,11 +28,13 @@ const ClassesCard = ({ classItem, user, refetch }) => {
             timer: 2000,
           });
           navigate("/auth/login", { state: { from: location } });
+          setAxiosLoading(false);
           return;
         } else {
           swal("Your imaginary file is safe!", {
             timer: 3000,
           });
+          setAxiosLoading(false);
           return;
         }
       });

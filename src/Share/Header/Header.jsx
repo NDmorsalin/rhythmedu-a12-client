@@ -58,7 +58,7 @@ const Header = () => {
                             ? " font-bold text-white bg-blue-500 hover:bg-blue-700 rounded-md"
                             : "font-bold"
                         }
-                        to="/dashboard"
+                        to={`/dashboard/${user?.role}`}
                       >
                         Dashboard
                       </NavLink>

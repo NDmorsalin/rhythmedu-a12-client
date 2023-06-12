@@ -40,7 +40,8 @@ const DashboardNav = ({ children }) => {
           </span>
         </>
       ),
-      path: "/dashboard/students/mySelectedClass",
+      path: "/dashboard/student",
+      // path: "/dashboard/student/mySelectedClass",
       Icon: FaFolderPlus,
     },
     {
@@ -53,19 +54,20 @@ const DashboardNav = ({ children }) => {
           </span>
         </>
       ),
-      path: "/dashboard/students/enrolledClass",
+      path: "/dashboard/student/enrolledClass",
       Icon: CheckBadgeIcon,
     },
     {
       name: "Payment History",
-      path: "/dashboard/students/paymenthistory",
+      path: "/dashboard/student/paymenthistory",
       Icon: FaHistory,
     },
   ];
   const adminNav = [
     {
       name: "Manage Users",
-      path: "/dashboard/admin/manageUser",
+      path: "/dashboard/admin",
+      // path: "/dashboard/admin/manageUser",
       Icon: FaUsersCog,
     },
     {
@@ -78,7 +80,8 @@ const DashboardNav = ({ children }) => {
   const instructorNav = [
     {
       name: "Add A Class",
-      path: "/dashboard/insructor/addclass",
+      path: "/dashboard/instructor",
+      // path: "/dashboard/insructor/addclass",
       Icon: FaAddressBook,
     },
     {
@@ -88,7 +91,7 @@ const DashboardNav = ({ children }) => {
           <span className="badge badge-secondary">+ {myClasses?.length}</span>
         </>
       ),
-      path: "/dashboard/insructor/myClasses",
+      path: "/dashboard/instructor/myClasses",
       Icon: FaChalkboardTeacher,
     },
   ];
