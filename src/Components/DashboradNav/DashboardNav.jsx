@@ -19,22 +19,42 @@ import { NavLink } from "react-router-dom";
 import logo from "../../assets/logo.webp";
 import { useAuth } from "../../Provider/AuthProvider";
 import { useFetchInstructorClasses } from "../../hooks/useFetchClasses";
+import useStudentSelectedClasses from "../../hooks/useStudentSelectedClasses";
+import useStudentEnrolledClasses from "../../hooks/useStudentEnrolledClasses";
 
 const DashboardNav = ({ children }) => {
   const [toggleLeftNav, setToggleLeftNav] = useState();
   const { user } = useAuth();
-  const { myClasses } =  useFetchInstructorClasses();
+  const { myClasses } = useFetchInstructorClasses();
+  const { mySelectedClass } = useStudentSelectedClasses();
+  const { myEnrolledClass } = useStudentEnrolledClasses();
 
   const studentNav = [
     {
-      name: "Selected Classes",
+      name: (
+        <>
+          Selected Classes{" "}
+          <span className="badge badge-secondary border-white  absolute top-1/2 right-2 -translate-y-1/2 ">
+            {" "}
+            {mySelectedClass?.length}
+          </span>
+        </>
+      ),
       path: "/dashboard/students/mySelectedClass",
       Icon: FaFolderPlus,
     },
     {
-      name: "Enrolled Classes",
+      name: (
+        <>
+          Enrolled Classes{" "}
+          <span className="badge badge-secondary border-white  absolute top-1/2 right-2 -translate-y-1/2 ">
+            {" "}
+            {myEnrolledClass?.length}
+          </span>
+        </>
+      ),
       path: "/dashboard/students/enrolledClass",
-      Icon:  CheckBadgeIcon,
+      Icon: CheckBadgeIcon,
     },
     {
       name: "Payment History",
@@ -43,7 +63,11 @@ const DashboardNav = ({ children }) => {
     },
   ];
   const adminNav = [
-    { name: "Manage Users", path: "/dashboard/admin/manageUser", Icon: FaUsersCog },
+    {
+      name: "Manage Users",
+      path: "/dashboard/admin/manageUser",
+      Icon: FaUsersCog,
+    },
     {
       name: "Manage Classes",
       path: "/dashboard/admin/manageClasses",
@@ -143,7 +167,7 @@ const DashboardNav = ({ children }) => {
                 to={item.path}
                 key={item.path + index}
                 className={({ isActive }) =>
-                  `flex transition-all duration-300 my-1 px-4 py-2 rounded-full hover:bg-blue-500 hover:text-white items-center gap-3 text-xl ${
+                  `flex transition-all duration-300 my-1 px-4 py-2 rounded-full relative hover:bg-blue-500 hover:text-white items-center gap-3 text-xl ${
                     isActive ? "bg-blue-600 text-white" : ""
                   }`
                 }

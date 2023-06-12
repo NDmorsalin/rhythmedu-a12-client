@@ -83,6 +83,7 @@ const ClassesCard = ({ classItem, user, refetch }) => {
             disabled={
               classItem?.availableSeats <= 0 ||
               classItem?.isThisClassSelected ||
+              classItem?.isPaid ||
               axiosLoading ||
               (user?.role &&
                 (user?.role === "admin" || user?.role === "instructor"))
@@ -116,6 +117,7 @@ const ClassesCard = ({ classItem, user, refetch }) => {
           disabled={
             classItem?.availableSeats <= 0 ||
             classItem?.isThisClassSelected ||
+            classItem?.isPaid ||
             axiosLoading ||
             (user?.role &&
               (user?.role === "admin" || user?.role === "instructor"))
@@ -129,14 +131,17 @@ const ClassesCard = ({ classItem, user, refetch }) => {
           {classItem?.availableSeats <= 0 && "Stock Out"}
 
           {classItem?.isThisClassSelected && "Already Selected"}
+          {classItem?.isPaid && "Paid"}
 
-          {(user?.role === "admin" || user?.role === "instructor")&& !classItem?.availableSeats <= 0 &&
+          {(user?.role === "admin" || user?.role === "instructor") &&
+            !classItem?.availableSeats <= 0 &&
             `can't Select`}
 
           {axiosLoading && "Loading..."}
 
           {classItem?.availableSeats <= 0 ||
             classItem?.isThisClassSelected ||
+            classItem?.isPaid ||
             axiosLoading ||
             (user?.role &&
               (user?.role === "admin" || user?.role === "instructor")) ||

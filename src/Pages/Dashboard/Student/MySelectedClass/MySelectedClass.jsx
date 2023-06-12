@@ -1,31 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "../../../../Provider/AuthProvider";
 import axiosInstance from "../../../../utility/axiosInstance";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { FaCreditCard } from "react-icons/fa";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
+import useStudentSelectedClasses from "../../../../hooks/useStudentSelectedClasses";
 
 const MySelectedClass = () => {
-  const { user } = useAuth();
-  const {
-    data: mySelectedClass,
-    error,
-    isLoading,
-    isError,
-    refetch,
-  } = useQuery({
-    queryKey: ["mySelectedClass", user?.uid],
-    queryFn: async () => {
-      const response = await axiosInstance.get(`/students`, {
-        headers: {
-          studentid: user?.uid,
-        },
-      });
-      return response.data;
-    },
-  });
-
+  const { mySelectedClass, error, isLoading, isError, refetch } =
+    useStudentSelectedClasses();
+  
   const handleDeleteClass = async (classId) => {
     try {
       swal({
