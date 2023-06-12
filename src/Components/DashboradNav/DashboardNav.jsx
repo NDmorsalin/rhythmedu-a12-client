@@ -58,7 +58,7 @@ const DashboardNav = ({ children }) => {
     },
     {
       name: "Payment History",
-      path: "/student/selectedclass",
+      path: "/dashboard/students/paymenthistory",
       Icon: FaHistory,
     },
   ];

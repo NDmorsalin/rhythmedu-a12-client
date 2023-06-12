@@ -7,6 +7,8 @@ import { useState } from "react";
 import { useAuth } from "../../../../Provider/AuthProvider";
 import swal from "sweetalert";
 import { utcTimeSendToDb } from "../../../../utility/handleItme";
+import useStudentEnrolledClasses from "../../../../hooks/useStudentEnrolledClasses";
+import useStudentSelectedClasses from "../../../../hooks/useStudentSelectedClasses";
 
 const CheckoutForm = () => {
   const location = useLocation();
@@ -14,6 +16,8 @@ const CheckoutForm = () => {
   const [clientSecret, setClientSecret] = useState(null);
   const [processing, setProcessing] = useState(false);
   const { user } = useAuth();
+  const { refetch: refetchEnroll } = useStudentEnrolledClasses();
+  const { refetch: refetchSelected } = useStudentSelectedClasses();
 
   const {
     className,
@@ -100,6 +104,8 @@ const CheckoutForm = () => {
           paymentDate: utcTimeSendToDb(),
         }
       );
+      refetchSelected();
+      refetchEnroll();
       navigate("/dashboard/students/mySelectedClass");
     }
     setProcessing(false);
