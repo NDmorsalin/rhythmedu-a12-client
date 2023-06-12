@@ -1,23 +1,40 @@
-const Instructor = () => {
+const Instructor = ({ instructor }) => {
   return (
     <div>
-      <div className="card  bg-base-100 shadow-xl">
-        <figure>
+      <div
+        data-aos="zoom-in"
+        data-aos-duration="1000"
+        className={`card group space-y-4 shadow-2xl rounded-3xl border  p-4`}
+      >
+        <div
+          className={`w-40   h-40 mx-auto   border relative overflow-hidden shadow-2xl rounded-full`}
+        >
           <img
-            src="/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-            alt="Shoes"
+            src={instructor?.photoUrl}
+            // alt={classItem?.className}
+            className=" object-cover  w-full"
           />
-        </figure>
-        <div className="card-body">
-          <h2 className="card-title">
-            Shoes!
-            <div className="badge badge-secondary">NEW</div>
-          </h2>
-          <p>If a dog chews shoes whose shoes does he choose?</p>
-          <div className="card-actions justify-end">
-            <div className="badge badge-outline">Fashion</div>
-            <div className="badge badge-outline">Products</div>
+        </div>
+
+        <div className="flex items-center justify-between ">
+          <div className="font-bold">
+            <h4 className="text-[#02224d] hover:text-blue-500 duration-500 text-xl md:text-2xl font-bold">
+              {instructor?.name}
+            </h4>
+            <p className="text-gray-500">{instructor?.email}</p>
           </div>
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="">
+            <p className="text-xl font-bold ">
+              Classes:{instructor?.classes?.length}
+            </p>
+          </div>
+          <button
+            className={`btn btn-outline btn-info !text-blue-600 hover:!text-white`}
+          >
+            See Classes
+          </button>
         </div>
       </div>
     </div>
