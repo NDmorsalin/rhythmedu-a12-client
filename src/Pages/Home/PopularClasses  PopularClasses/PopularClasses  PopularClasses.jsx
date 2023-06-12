@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../../../utility/axiosInstance";
+import Loading from "../../../Share/Loading/Loading";
 
 const PopularClasses = () => {
   const {
@@ -8,16 +9,18 @@ const PopularClasses = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: "popularClasses",
+    queryKey: ["popularClasses"],
     queryFn: async () => {
       const response = await axiosInstance.get("/popularclass");
       return response.data;
     },
   });
-  console.log(popularclass);
+//   console.log(popularclass);
+
+if (isLoading) return <Loading />;
   return (
     <div>
-      <h1 className="text-3xl text-center">Popular Classes</h1>
+      
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         {popularclass?.map((classItem) => (
           <div
