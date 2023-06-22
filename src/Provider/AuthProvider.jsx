@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
       console.error("register function cathc", error);
 
       setLoading(false);
-       throw new Error(error.message);
+      throw new Error(error.message);
     }
     setLoading(false);
 
@@ -71,20 +71,17 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signOut(auth);
   };
-  
+
   // set user on auth state change
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        
-        const res = await axiosInstance.post(
-          "/token",
-          {
-            email: user?.email,
-          }
-        );
-
-        setUser({...user,role:res.data.role});
+        const res = await axiosInstance.post("/token", {
+          email: user?.email,
+        });
+        // console.log({ token: res.data.token });
+        localStorage.setItem("jwttoken", res.data.token);
+        setUser({ ...user, role: res.data.role });
         setLoading(false);
       } else {
         setUser(null);

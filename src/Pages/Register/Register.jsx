@@ -5,37 +5,36 @@ import animationData from "../../assets/lottiefile/register.json";
 import { useAuth } from "../../Provider/AuthProvider";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import validator from "../../utility/validator";
 import axiosInstance from "../../utility/axiosInstance";
 import GoogleLogin from "../../Share/GoogleLogin/GoogleLogin";
+import { useForm } from "react-hook-form";
 
 const Register = () => {
-  const { register, loading, setLoading } = useAuth();
+  const { register:registerFirebase, loading, setLoading } = useAuth();
   const [error, setError] = useState("");
   const [toggleEye, setToggleEye] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setError("");
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    const name = e.target.name.value;
-    const photoUrl = e.target.photoUrl.value;
-    // if user input is not valid
-    const useError = validator(email, password);
-    if (useError) {
-      setError(useError);
-      return;
-    }
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    getValues,
+  } = useForm();
 
+  const handleRegister = async (data) => {
+    const { email, password, name, photoUrl } = data;
+    // const email = e.target.email.value;
+    // const password = e.target.password.value;
+    // const name = e.target.name.value;
+    // const photoUrl = e.target.photoUrl.value;
+    // if user input is not valid
     try {
-      const user = await register(email, password, name, photoUrl);
+      const user = await registerFirebase(email, password, name, photoUrl);
       // console.log({email,password});
       console.log(user);
       const dbUserInfo = await axiosInstance.post("/users", {
-        email:email.toLowerCase(),
+        email: email.toLowerCase(),
         role: "student",
         name,
         photoUrl,
@@ -48,23 +47,10 @@ const Register = () => {
       console.log({ error: error.message });
     }
   };
-  // Register with google
-  /* const handleGoogleLogin = async () => {
-    setError("");
-    try {
-      const user = await loginWithGoogle();
-      console.log(user);
-      navigate(location?.state?.from?.pathname || "/");
-    } catch (error) {
-      console.log({ error });
-      setLoading(false);
-      setError(error.code);
-    }
-  }; */
-  // console.log({ loading, error });
+
   return (
     <>
-      <div className="bg-[#E5E7EB] lg:h-[calc(100vh-4.5rem)]  flex flex-col lg:flex-row-reverse justify-center items-center py-8">
+      <div className="bg-[#E5E7EB]   flex flex-col lg:flex-row-reverse justify-center items-center py-8">
         <div className="w-full max-w-md lg:w-1/2">
           <div className=" shadow-lg  rounded-lg p-5">
             <div className="flex items-center justify-between">
@@ -73,7 +59,7 @@ const Register = () => {
                 <span className="ms-1  text-red-600">*</span> Field is Required
               </p>
             </div>
-            <form onSubmit={handleRegister}>
+            <form onSubmit={handleSubmit(handleRegister)}>
               <div className="mb-4">
                 <label
                   htmlFor="name"
@@ -84,9 +70,16 @@ const Register = () => {
                 <input
                   type="text"
                   id="name"
-                  name="name"
+                  {...register("name", {
+                    required: "Name is required",
+                  })}
                   className="w-full px-4 py-2 border-gray-300 rounded-md focus:border-indigo-500 focus:outline-none"
                 />
+                {errors.name && (
+                  <p className="text-red-600 font-bold">
+                    {errors.name.message}
+                  </p>
+                )}
               </div>
               <div className="mb-4">
                 <label
@@ -99,31 +92,22 @@ const Register = () => {
                   type="email"
                   id="email"
                   name="email"
-                  required
-                  className="w-full px-4 py-2 border-gray-300 rounded-md focus:border-indigo-500 focus:outline-none"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
+                      message: "Please enter a valid email address",
+                    },
+                  })}
+                  className={`w-full px-4 py-2 border-gray-300 rounded-md focus:border-indigo-500 focus:outline-none ${
+                    errors.email ? "border-red-500" : ""
+                  }`}
                 />
-              </div>
-              <div className="mb-4 relative">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password<sup className="ms-1 text-xl text-red-600">*</sup>
-                </label>
-                <input
-                  type={toggleEye ? "text" : "password"}
-                  id="password"
-                  name="password"
-                  required
-                  className="w-full px-4 py-2 border-gray-300 rounded-md focus:border-indigo-500 focus:outline-none"
-                />
-                <button
-                  onClick={() => setToggleEye(!toggleEye)}
-                  type="button"
-                  className="absolute shadow-md top-1/2 px-2 translate-y-1/2 right-4"
-                >
-                  {toggleEye ? <FaEye /> : <FaEyeSlash />}
-                </button>
+                {errors.email && (
+                  <p className="text-red-600 font-bold">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
               <div className="mb-4">
                 <label
@@ -135,11 +119,97 @@ const Register = () => {
                 <input
                   type="text"
                   id="photoUrl"
-                  name="photoUrl"
+                  {...register("photoUrl", {})}
                   className="w-full px-4 py-2 border-gray-300 rounded-md focus:border-indigo-500 focus:outline-none"
                 />
               </div>
+              <div className="mb-4 relative">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Password<sup className="ms-1 text-xl text-red-600">*</sup>
+                </label>
+
+                <input
+                  type={toggleEye ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message: "Password must be less than 20 characters",
+                    },
+                    pattern: {
+                      value: /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])/i,
+                      message:
+                        "Password must contain at least one letter, one digit, and one special character",
+                    },
+                  })}
+                  className={`w-full px-4 py-2 border-gray-300 rounded-md focus:border-indigo-500 focus:outline-none ${
+                    errors.password ? "border-red-500" : ""
+                  }`}
+                />
+                {errors.password && (
+                  <p className="text-red-600 font-bold">
+                    {errors.password.message}
+                  </p>
+                )}
+
+                <button
+                  onClick={() => setToggleEye(!toggleEye)}
+                  type="button"
+                  className="absolute shadow-md top-11 px-2  right-4"
+                >
+                  {toggleEye ? <FaEye /> : <FaEyeSlash />}
+                </button>
+              </div>
+
+              <div className="mb-4 relative">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Confirm Password
+                  <sup className="ms-1 text-xl text-red-600">*</sup>
+                </label>
+
+                <input
+                  type={toggleEye ? "text" : "password"}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  {...register("confirmPassword", {
+                    required: "Confirm Password is required",
+                    validate: (value) =>
+                      value === getValues("password") ||
+                      "Passwords do not match",
+                  })}
+                  className={`w-full px-4 py-2 border-gray-300 rounded-md focus:border-indigo-500 focus:outline-none ${
+                    errors.confirmPassword ? "border-red-500" : ""
+                  }`}
+                />
+                {errors.confirmPassword && (
+                  <p className="text-red-600 font-bold">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
+                <button
+                  onClick={() => setToggleEye(!toggleEye)}
+                  type="button"
+                  className="absolute shadow-md top-11 px-2  right-4"
+                >
+                  {toggleEye ? <FaEye /> : <FaEyeSlash />}
+                </button>
+              </div>
+
+              {/* common error */}
               {error && <p className="text-red-600 font-bold">{error}</p>}
+              {/* common error */}
               <div className="flex justify-between">
                 <button
                   type="submit"
@@ -170,19 +240,19 @@ const Register = () => {
               <div className="divider my-2">OR</div>
               <GoogleLogin setError={setError} />
               {/* <div className="flex items-center justify-center">
-                <button
-                  type="button"
-                  onClick={handleGoogleLogin}
-                  disabled={loading}
-                  className={`text-white bg-gradient-to-br   font-bold py-2 px-4 btn btn-circle btn-outline ${
-                    loading
-                      ? "from-green-800 via-yellow-600 to-red-500"
-                      : "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
-                  }`}
-                >
-                  <FaGoogle />
-                </button>
-              </div> */}
+        <button
+          type="button"
+          onClick={handleGoogleLogin}
+          disabled={loading}
+          className={`text-white bg-gradient-to-br   font-bold py-2 px-4 btn btn-circle btn-outline ${
+            loading
+              ? "from-green-800 via-yellow-600 to-red-500"
+              : "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+          }`}
+        >
+          <FaGoogle />
+        </button>
+      </div> */}
             </div>
           </div>
         </div>

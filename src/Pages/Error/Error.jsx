@@ -20,7 +20,7 @@ const Error404Page = () => {
           onClick={() => navigate(-1)}
           className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md"
         >
-          Go back to Home
+          Go to back
         </button>
       </div>
     </div>

@@ -8,9 +8,10 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const PaymentPage = () => {
   return (
+    <div className="px-1 md:px-8 my-4 md:my-8">
     <Elements stripe={stripePromise}>
       <CheckoutForm />
-    </Elements>
+    </Elements></div>
   );
 };
 

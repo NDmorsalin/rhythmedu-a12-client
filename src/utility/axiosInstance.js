@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://rhythmedu-a12.vercel.app/api',
+  // baseURL: 'https://rhythmedu-a12.vercel.app/api',
+  baseURL: 'http://localhost:5000/api',
   withCredentials: true,
 });
 
@@ -28,4 +29,16 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+axiosInstance.interceptors.request.use(request => {
+  // console.log('Starting Request', request)
+
+  // console.log(localStorage.getItem('jwttoken'));
+  request.headers.authorization = localStorage.getItem('jwttoken');
+
+
+  return request
+}, (error) => {
+  console.log('Request Error', error)
+  return Promise.reject(error)
+});
 export default axiosInstance;

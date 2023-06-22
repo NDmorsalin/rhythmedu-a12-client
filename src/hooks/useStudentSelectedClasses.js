@@ -13,12 +13,16 @@ const useStudentSelectedClasses = () => {
     } = useQuery({
         queryKey: ["mySelectedClass", user?.uid],
         queryFn: async () => {
-            const response = await axiosInstance.get(`/students`, {
-                headers: {
-                    studentid: user?.uid,
-                },
-            });
-            return response.data;
+            if(user?.role ==='student'){
+                const response = await axiosInstance.get(`/students`, {
+                    headers: {
+                        studentid: user?.uid,
+                    },
+                });
+                return response.data;
+            }else{
+                return []
+            }
         },
     });
     return {

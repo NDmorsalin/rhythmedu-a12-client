@@ -11,11 +11,10 @@ const Header = () => {
     <>
       <li>
         <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? " font-bold text-white bg-blue-500 hover:bg-blue-700 rounded-md"
-              : "font-bold"
-          }
+          className={({ isActive }) => `${
+            isActive && "text-white bg-blue-500 hover:bg-blue-700 rounded-md"
+          } 
+          font-bold `}
           to="/"
         >
           Home
@@ -24,53 +23,75 @@ const Header = () => {
 
       <li>
         <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? "   font-bold text-white bg-blue-500 hover:bg-blue-700 rounded-md"
-              : "font-bold"
-          }
+          className={({ isActive }) =>`${
+            isActive && "text-white bg-blue-500 hover:bg-blue-700 rounded-md"
+          } 
+          font-bold `}
           to="/instructors"
         >
-         Instructors
+          Instructors
         </NavLink>
       </li>
 
       <li>
         <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? "   font-bold text-white bg-blue-500 hover:bg-blue-700 rounded-md"
-              : "font-bold"
-          }
+          className={({ isActive }) =>`${
+            isActive && "text-white bg-blue-500 hover:bg-blue-700 rounded-md"
+          } 
+          font-bold `}
           to="/classes"
         >
-         Classes
+          Classes
         </NavLink>
       </li>
 
-
-      {user && (
-                  <>
-                    <li>
-                      <NavLink
-                        className={({ isActive }) =>
-                          isActive
-                            ? " font-bold text-white bg-blue-500 hover:bg-blue-700 rounded-md"
-                            : "font-bold"
-                        }
-                        to={`/dashboard/${user?.role}`}
-                      >
-                        Dashboard
-                      </NavLink>
-                    </li>
-                  </>
-                )}
+      {user ? (
+        <>
+          <li>
+            <NavLink
+              className={({ isActive }) =>`${
+                isActive && "text-white bg-blue-500 hover:bg-blue-700 rounded-md"
+              } 
+              font-bold `
+            }
+              to={`/dashboard/${user?.role}`}
+            >
+              Dashboard
+            </NavLink>
+          </li>
+        </>
+      ) : (
+        <>
+          <li>
+            <NavLink
+              className={({ isActive }) =>`${
+                isActive && "text-white bg-blue-500 hover:bg-blue-700 rounded-md"
+              } 
+              font-bold block sm:hidden`}
+              to="/auth/login"
+            >
+              Login
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={({ isActive }) =>`${
+                isActive && "text-white bg-blue-500 hover:bg-blue-700 rounded-md"
+              } 
+              font-bold block sm:hidden`}
+              to="/auth/register"
+            >
+              Register
+            </NavLink>
+          </li>
+        </>
+      )}
     </>
   );
 
   return (
     <div className="shadow-lg sticky top-0 left-0 bg-white z-50">
-      <div className="container px-8 mx-auto ">
+      <div className="container sm:px-8 px-6 mx-auto ">
         <div className="navbar  rounded-b-lg">
           <div className="navbar-start">
             <div className="">
@@ -99,7 +120,6 @@ const Header = () => {
                 }}
               >
                 {navItems}
-                
               </ul>
             </div>
             <NavLink
@@ -110,12 +130,12 @@ const Header = () => {
                 <img src={logo} alt="" className="w-full h-full object-cover" />
               </div>
               <div className="">
-                <h1 className="text-3xl font-bold">RhythmEdu</h1>
+                <h1 className="text-xl sm:text-3xl font-bold">RhythmEdu</h1>
                 <p
                   style={{
                     lineHeight: "1",
                   }}
-                  className="text-[.6rem] font-bold p-0 m-0"
+                  className="text-[.4rem] sm:text-[.6rem] font-bold p-0 m-0"
                 >
                   Musical instruments learning institute
                 </p>
@@ -128,31 +148,7 @@ const Header = () => {
           <div className="navbar-end gap-2 sm:gap-4">
             {user ? (
               <>
-                <div className="dropdown dropdown-end">
-                  <label tabIndex={0} className="btn btn-ghost btn-circle">
-                    <div className="indicator">
-                      <FaHeart />
-                      <span className="badge badge-sm indicator-item"></span>
-                    </div>
-                  </label>
-                  <div
-                    tabIndex={0}
-                    className="mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow"
-                  >
-                    <div className="card-body">
-                      <span className="font-bold text-lg"> Items</span>
-
-                      <div className="card-actions">
-                        <NavLink
-                          to="/favorite"
-                          className="btn btn-primary btn-block"
-                        >
-                          View Favorites
-                        </NavLink>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
                 <div className="dropdown dropdown-end">
                   <label
                     tabIndex={0}
@@ -228,22 +224,24 @@ const Header = () => {
             ) : (
               <>
                 <NavLink
-                  className={({ isActive }) =>
+                  className={({ isActive }) => `${
                     isActive
-                      ? " font-bold text-white bg-blue-500 hover:bg-blue-700 rounded-md py-2 px-4"
-                      : "font-bold hover:text-white  hover:bg-blue-500  rounded-md py-2 px-4"
-                  }
+                      ? " text-white bg-blue-500 hover:bg-blue-700"
+                      : " hover:text-white hover:bg-blue-500 "
+                  }    rounded-md py-2 px-4 font-bold hidden sm:block 
+              `}
                   to="/auth/login"
                 >
                   Login
                 </NavLink>
 
                 <NavLink
-                  className={({ isActive }) =>
+                  className={({ isActive }) => `${
                     isActive
-                      ? "py-2 px-4 font-bold text-white bg-blue-500 hover:bg-blue-700 rounded-md"
-                      : "font-bold hover:text-white  hover:bg-blue-500  rounded-md py-2 px-4"
-                  }
+                      ? " text-white bg-blue-500 hover:bg-blue-700"
+                      : " hover:text-white hover:bg-blue-500 "
+                  }    rounded-md py-2 px-4 font-bold hidden sm:block
+              `}
                   to="/auth/register"
                 >
                   Register

@@ -26,3 +26,8 @@ body{
   display: block;
   width: 100%;
 }
+
+.table :where(th, td) {
+  padding: 0.5rem;
+
+}

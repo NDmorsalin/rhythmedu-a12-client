@@ -5,8 +5,8 @@ const MyEnrolledClasses = () => {
     useStudentEnrolledClasses();
   return (
     <div>
-      <h1>My Selected Class</h1>
-      <div className="px-8 my-8">
+      <div className="px-1 md:px-8 my-4 md:my-8">
+      <h1 className="text-center text-3xl font-bold mb-2">My Enrolled Classes</h1>
         <div className="w-full ">
           <div className="overflow-auto">
             <table className="table table-zebra    mx-auto">

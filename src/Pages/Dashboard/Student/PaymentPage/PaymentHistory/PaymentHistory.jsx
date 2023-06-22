@@ -4,8 +4,8 @@ const PaymentHistory = () => {
   const { myEnrolledClass, error, refetch, isError, isLoading } =
     useStudentEnrolledClasses();
   return (
-    <div>
-      <h1 className="text-center text-3xl font-bold">My Payment history Class</h1>
+    <div className="px-1 md:px-8 my-4 md:my-8">
+      <h1 className="text-center text-3xl font-bold">My Payment history</h1>
       <div className="px-8 my-8">
         <div className="w-full ">
           <div className="overflow-auto">

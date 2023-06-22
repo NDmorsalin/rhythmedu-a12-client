@@ -1,10 +1,11 @@
 import { Outlet } from "react-router-dom";
 import { useAuth } from "../Provider/AuthProvider";
 import DashboardNav from "../Components/DashboradNav/DashboardNav";
+import Unauthorize from "../Pages/Error/Unauthorize";
 
 const InstructorsLayout = () => {
   const { user } = useAuth();
-  if (user.role !== "instructor") return <h1>Not Authorized</h1>;
+  if (user.role !== "instructor") return <Unauthorize />;
 
   return (
     <DashboardNav>
