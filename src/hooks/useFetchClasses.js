@@ -10,7 +10,7 @@ const useFetchAllClasses = () => {
     queryFn: async () => {
       if (user?.role === 'admin') {
 
-        const response = await axiosInstance.get('/classes')
+        const response = await axiosInstance.get('/admin/classes')
         return response.data
       } else {
         return []
